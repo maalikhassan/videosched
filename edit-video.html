@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Video</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://www.youtube.com/favicon.ico" type="image/x-icon"> <!-- Tab Icon -->
+</head>
+<body>
+    <div class="container">
+        <h1><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/> Edit Video</h1>
+        <form id="editVideoForm">
+            <input type="hidden" id="videoId" name="videoId">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" required>
+            <label for="scheduled_date">Scheduled Date:</label>
+            <input type="date" id="scheduled_date" name="scheduled_date" required>
+            <label for="scheduled_time">Scheduled Time:</label>
+            <input type="time" id="scheduled_time" name="scheduled_time" required>
+            <label for="reminder_time">Reminder Time:</label>
+            <input type="time" id="reminder_time" name="reminder_time" required>
+            <button type="submit">Update Video</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('id');
+        
+            // Fetch video data and populate the form
+            fetch(`fetch_video.php?id=${videoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.id) {
+                        document.getElementById('videoId').value = data.id;
+                        document.getElementById('title').value = data.title;
+                        document.getElementById('url').value = data.url;
+                        document.getElementById('scheduled_date').value = data.scheduled_date;
+                        document.getElementById('scheduled_time').value = data.scheduled_time;
+                        document.getElementById('reminder_time').value = data.reminder_time; // Set reminder_time
+                    } else {
+                        console.error('No video found with that ID.');
+                        alert('Video not found.'); // User feedback
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching video data:', error);
+                    alert('Error fetching video data.'); // User feedback
+                });
+        });
+
+        // Handle form submission
+        document.getElementById('editVideoForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting the default way
+            const formData = new FormData(this); // Get form data
+
+            fetch('update_video.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show success message
+                window.location.href = 'index.html'; // Redirect back to the main page
+            })
+            .catch(error => {
+                console.error('Error updating video:', error);
+                alert('Error updating video.'); // User feedback
+            });
+        });
+    </script>
+</body>
+</html>

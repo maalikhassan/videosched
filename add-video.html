@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Video</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://www.youtube.com/favicon.ico" type="image/x-icon"> <!-- Tab Icon -->
+</head>
+<body>
+    <div class="container">
+        <h1><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/> Add New Video</h1>
+        <form id="addVideoForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" required>
+            <label for="scheduled_date">Scheduled Date:</label>
+            <input type="date" id="scheduled_date" name="scheduled_date" required>
+            <label for="scheduled_time">Scheduled Time:</label>
+            <input type="time" id="scheduled_time" name="scheduled_time" required>
+            <label for="reminder_time">Reminder Time:</label>
+            <input type="time" id="reminder_time" name="reminder_time" required>
+            <button type="submit">Add Video</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('addVideoForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting the default way
+            const formData = new FormData(this); // Get form data
+
+            fetch('add_video.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show success message
+                window.location.href = 'index.html'; // Redirect back to the main page
+            })
+            .catch(error => {
+                console.error('Error adding video:', error);
+                alert('Error adding video.'); // User feedback
+            });
+        });
+    </script>
+</body>
+</html>
