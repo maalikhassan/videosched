@@ -1,8 +1,8 @@
 <?php
 include 'db.php';
 
-// Fetch videos including reminder_time
-$sql = "SELECT id, title, url, scheduled_date, scheduled_time, reminder_time, status FROM videos";
+// Fetch videos including reminder_time, sorted by date and time
+$sql = "SELECT id, title, url, scheduled_date, scheduled_time, reminder_time, status FROM videos ORDER BY scheduled_date ASC, scheduled_time ASC";
 $result = $conn->query($sql);
 $events = [];
 
