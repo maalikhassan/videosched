@@ -12,8 +12,5 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Ignore possible uploaded assets (keep the assets folder but not uploads)
-assets/uploads/
-
 # Ignore Composer vendor (if added later)
 vendor/
