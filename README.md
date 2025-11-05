@@ -21,7 +21,7 @@ VideoSched is a web application that helped me manage my YouTube watching habits
 ## 🛠️ Built With
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: PHP
-- **Database**: MySQL
+- **Database**: MySQL (online)
 - **Libraries**:
   - FullCalendar 3.10.2 (calendar visualization)
   - jQuery 3.5.1
@@ -81,7 +81,6 @@ ALTER TABLE videos ADD COLUMN reminder_time TIME NULL;
 6. Mark videos as watched after viewing
 
 ## 📸 Screenshots
-Below are placeholders — add real screenshots to `assets/` and commit them.
 
 Calendar view:
 
@@ -91,15 +90,17 @@ List view:
 
 ![List view](assets/screenshot-list.png)
 
-Demo GIF (optional):
+Add view:
 
-![Demo GIF](assets/demo.gif)
+![Add view](assets/screenshot-add.png.png)
 
-How to add screenshots:
-1. Start your local server and open the app.
-2. Capture the calendar and list views.
-3. Save optimized images in `assets/` using the filenames above.
-4. Commit and push; the README will display them automatically.
+Edit view:
+
+![Edit view](assets/screenshot-edit.png)
+
+Notification view:
+
+![Notification view](assets/screenshot-notification.png)
 
 ## 🤝 Contributing
 While this was a personal project to solve my own YouTube watching habits, contributions are welcome! Feel free to:
