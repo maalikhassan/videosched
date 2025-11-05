@@ -13,7 +13,7 @@ $reminder_time = $_POST['reminder_time']; // Get the reminder time from the form
 
 // Prepare the SQL statement to prevent SQL injection
 $stmt = $conn->prepare("UPDATE videos SET title=?, url=?, scheduled_date=?, scheduled_time=?, reminder_time=? WHERE id=?");
-$stmt->bind_param("ssssii", $title, $url, $scheduled_date, $scheduled_time, $reminder_time, $id);
+$stmt->bind_param("sssssi", $title, $url, $scheduled_date, $scheduled_time, $reminder_time, $id); // Bind the reminder_time
 
 if ($stmt->execute()) {
     echo "Video updated successfully.";

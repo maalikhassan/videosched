@@ -94,3 +94,29 @@ input[type="time"]:focus {
     padding: 20px;
 }
 
+/* Table responsiveness */
+.table-responsive {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+}
+
+/* Basic table styling for better viewing on smaller screens */
+#videoTable {
+    width: 100%; /* Ensure the table fits the wrapper */
+    border-collapse: collapse; /* Consistent border rendering */
+}
+
+#videoTable th, #videoTable td {
+    padding: 8px 12px;
+    text-align: left;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Adjust table font size and spacing on smaller devices */
+@media (max-width: 600px) {
+    #videoTable th, #videoTable td {
+        font-size: 14px; /* Adjust font size for readability */
+        padding: 6px 10px; /* Smaller padding for better fit */
+    }
+}
+

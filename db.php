@@ -1,9 +1,13 @@
 <?php
 // Database connection settings
-$host = 'sql308.infinityfree.com'; // Replace with the hostname provided by your hosting service
-$username = 'if0_37390620'; // Your database username
-$password = 'k5XBLcOifgaSWr'; // Your database password
-$dbname = 'if0_37390620_youtube'; // Your database name
+// Credentials are read from environment variables to avoid committing secrets.
+// Set the following environment variables in your system or a .env file (not committed):
+// DB_HOST, DB_USER, DB_PASS, DB_NAME
+
+$host = getenv('DB_HOST') ?: 'localhost';
+$username = getenv('DB_USER') ?: 'root';
+$password = getenv('DB_PASS') ?: '';
+$dbname = getenv('DB_NAME') ?: 'videosched';
 
 // Create a connection
 $conn = new mysqli($host, $username, $password, $dbname);

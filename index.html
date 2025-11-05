@@ -18,20 +18,23 @@
     
     <a href="add-video.html">Add New Video</a>
 
-    <table id="videoTable">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Scheduled Date</th>
-                <th>Scheduled Time</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Rows will be populated dynamically -->
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table id="videoTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Scheduled Date</th>
+                    <th>Scheduled Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be populated dynamically -->
+            </tbody>
+        </table>
+    </div>
+    
 
     <script src="main.js"></script>
 
@@ -42,35 +45,51 @@ if (Notification.permission !== "denied") {
 }
 
 function checkReminders() {
-    fetch('fetch_videos.php') // Fetch all videos
+    fetch('fetch_videos.php')
         .then(response => response.json())
         .then(videos => {
-            const now = new Date();
             videos.forEach(video => {
-                const scheduledDateTime = new Date(video.scheduled_date + ' ' + video.scheduled_time);
-                let reminderDateTime;
-
                 // Check if reminder_time is defined
                 if (video.reminder_time) {
-                    reminderDateTime = new Date(scheduledDateTime.getTime() - (parseTime(video.reminder_time) * 60000)); // Reminder time in milliseconds
-                } else {
-                    console.warn(`Reminder time not defined for video: ${video.title}`); // Log a warning
-                    return; // Skip to the next video if reminder_time is not defined
-                }
+                    const reminderTimeParts = video.reminder_time.split(':');
+                    const reminderTime = parseTime(reminderTimeParts);
 
-                // Check if the current time is equal to or past the reminder time
-                if (now >= reminderDateTime && now < scheduledDateTime) {
-                    notifyUser(video.title, video.url); // Notify the user
+                    // Schedule the notification
+                    scheduleReminderNotification(video, reminderTime);
+                } else {
+                    console.log(`Reminder time not defined for video: ${video.title}`);
                 }
             });
         })
-        .catch(error => console.error('Error fetching videos:', error));
+        .catch(error => {
+            console.error('Error fetching videos:', error);
+        });
 }
 
+function parseTime(timeParts) {
+    // Safely parse time parts to avoid errors
+    const hours = parseInt(timeParts[0], 10) || 0;
+    const minutes = parseInt(timeParts[1], 10) || 0;
+    return { hours, minutes };
+}
 
-function parseTime(time) {
-    const [hours, minutes] = time.split(':');
-    return parseInt(hours) * 60 + parseInt(minutes); // Convert time to minutes
+function scheduleReminderNotification(video, reminderTime) {
+    const now = new Date();
+    const scheduledDate = new Date(video.scheduled_date + 'T' + video.scheduled_time); // Combine date and time
+    const reminderDate = new Date(scheduledDate);
+    reminderDate.setHours(reminderTime.hours, reminderTime.minutes, 0);
+
+    // Calculate the time difference between the reminder time and now
+    const timeDifference = reminderDate - now;
+
+    if (timeDifference > 0) {
+        // Schedule the notification
+        setTimeout(() => {
+            notifyUser(video.title, video.url);
+        }, timeDifference);
+    } else {
+        console.log(`Reminder time for video: ${video.title} has already passed.`);
+    }
 }
 
 function notifyUser(title, url) {
@@ -83,16 +102,33 @@ function notifyUser(title, url) {
         notification.onclick = function() {
             window.open(url); // Open the video URL when clicked
         };
+    } else if (Notification.permission !== "denied") {
+        // Request permission if not granted or denied
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                notifyUser(title, url); // Retry showing notification after permission is granted
+            }
+        });
     } else {
         console.log("Notification permission denied.");
     }
 }
+
+// Request notification permission if not already granted
+// if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+//     Notification.requestPermission().then(permission => {
+//         if (permission === "granted") {
+//             console.log("Notification permission granted.");
+//         }
+//     });
+// }
 
 // Check reminders every minute
 setInterval(checkReminders, 60000); // Check every minute
 
 // Initial call to check reminders
 checkReminders();
+
 
     </script>
 </body>

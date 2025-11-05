@@ -1,0 +1,19 @@
+# Ignore environment files
+.env
+
+# Ignore node_modules if any
+node_modules/
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+
+# Ignore possible uploaded assets (keep the assets folder but not uploads)
+assets/uploads/
+
+# Ignore Composer vendor (if added later)
+vendor/
