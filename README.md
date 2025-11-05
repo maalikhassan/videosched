@@ -92,7 +92,7 @@ List view:
 
 Add view:
 
-![Add view](assets/screenshot-add.png.png)
+![Add view](assets/screenshot-add.png)
 
 Edit view:
 
